@@ -19,7 +19,7 @@ func (f firstGame) Update() error {
 }
 
 func (f firstGame) Draw(screen *ebiten.Image) {
-	screen.Fill(colornames.Firebrick)
+	screen.Fill(colornames.Aqua)
 }
 
 func (f firstGame) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
