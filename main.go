@@ -14,15 +14,15 @@ type firstGame struct {
 	score  int
 }
 
-func (f *firstGame) Update() error {
+func (f firstGame) Update() error {
 	return nil
 }
 
-func (f *firstGame) Draw(screen *ebiten.Image) {
+func (f firstGame) Draw(screen *ebiten.Image) {
 	screen.Fill(colornames.Firebrick)
 }
 
-func (f *firstGame) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
+func (f firstGame) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
 	return outsideWidth, outsideHeight
 }
 
