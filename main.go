@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	_ "image/png"
+	"log"
 	"math/rand"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -16,7 +17,7 @@ type firstGame struct {
 	yloc      int
 	speed     int
 	score     int
-	treasures []coinPile
+	treasures []*coinPile
 }
 
 type coinPile struct {
@@ -44,6 +45,11 @@ func (f *firstGame) Update() error {
 func (f *firstGame) Draw(screen *ebiten.Image) {
 	screen.Fill(colornames.Aqua)
 	drawOps := &ebiten.DrawImageOptions{}
+	for _, pile := range f.treasures {
+		drawOps.GeoM.Reset()
+		drawOps.GeoM.Translate(pile.xLoc, pile.yLoc)
+		screen.DrawImage(pile.pict, drawOps)
+	}
 	drawOps.GeoM.Reset()
 	drawOps.GeoM.Translate(float64(f.xloc), float64(f.yloc))
 	screen.DrawImage(f.player, drawOps)
@@ -57,11 +63,20 @@ func main() {
 	ebiten.SetWindowSize(1000, 1000)
 	ebiten.SetWindowTitle("First Class Example")
 	playerImage, _, err := ebitenutil.NewImageFromFile("ship.png")
+	moneyPiles := make([]*coinPile, 0)
+	coinImage, _, err := ebitenutil.NewImageFromFile("coins.png")
+	if err != nil {
+		log.Fatal(err)
+	}
+	for i := 0; i < 10; i++ {
+		moneyPiles = append(moneyPiles, NewCoin(950, 950, coinImage))
+	}
 	ourGame := firstGame{
-		player: playerImage,
-		xloc:   200,
-		speed:  3,
-		yloc:   400,
+		player:    playerImage,
+		xloc:      200,
+		speed:     3,
+		yloc:      400,
+		treasures: moneyPiles,
 	} //we will use the zero value for now
 	err = ebiten.RunGame(&ourGame)
 	if err != nil {
